@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.mooney_ware</groupId>
+  <artifactId>android-flavor</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>apk</packaging>
+
+  <name>Environment Example</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.google.android</groupId>
+      <artifactId>android</artifactId>
+      <version>4.1.1.4</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <properties>
+      <environment>dev</environment>
+      <brand>brand1</brand>
+  </properties>
+
+
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <finalName>${project.artifactId}</finalName>
+    <resources>
+      <resource>
+        <directory>res</directory>
+        <targetPath>${project.build.directory}/filtered-res/${environment}-${brand}</targetPath>
+      </resource>
+      <resource>
+        <directory>assets</directory>
+        <targetPath>${project.build.directory}/filtered-assets/${environment}-${brand}</targetPath>
+      </resource>
+      <resource>
+        <directory>environments/${environment}/res</directory>
+        <targetPath>${project.build.directory}/filtered-res/${environment}-${brand}</targetPath>
+      </resource>
+      <resource>
+        <directory>environments/${environment}/assets</directory>
+        <targetPath>${project.build.directory}/filtered-assets/${environment}-${brand}</targetPath>
+      </resource>
+      <resource>
+        <directory>brands/${brand}/res</directory>
+        <targetPath>${project.build.directory}/filtered-res/${environment}-${brand}</targetPath>
+      </resource>
+      <resource>
+        <directory>brands/${brand}/assets</directory>
+        <targetPath>${project.build.directory}/filtered-assets/${environment}-${brand}</targetPath>
+      </resource>
+      <resource>
+        <directory>${basedir}</directory>
+        <targetPath>${project.build.directory}/${environment}-${brand}</targetPath>
+        <includes>
+          <include>AndroidManifest.xml</include>
+        </includes>
+      </resource>
+    </resources>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>2.6</version>
+          <configuration>
+            <overwrite>true</overwrite>
+          </configuration>
+          <executions>
+            <execution>
+              <phase>initialize</phase>
+              <goals>
+                <goal>resources</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+          <artifactId>android-maven-plugin</artifactId>
+          <version>3.8.2</version>
+          <extensions>true</extensions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+        <artifactId>android-maven-plugin</artifactId>
+        <configuration>
+          <sdk>
+            <platform>19</platform>
+          </sdk>
+          <resourceDirectory>${project.build.directory}/filtered-res/${environment}-${brand}</resourceDirectory>
+          <assetsDirectory>${project.build.directory}/filtered-assets/${environment}-${brand}</assetsDirectory>
+          <androidManifestFile>${project.build.directory}/${environment}-${brand}/AndroidManifest.xml</androidManifestFile>
+
+          <renameManifestPackage>com.mooney_ware.android.${brand}_${environment}</renameManifestPackage>
+          <manifestApplicationLabel>${brand} ${environment} ${app.name}</manifestApplicationLabel>
+
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
