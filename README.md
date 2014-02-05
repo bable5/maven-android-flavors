@@ -12,7 +12,7 @@ resource 'search'.
 Building and Deploying to a Connected Device
 ----
 
-The <code>environment</code> property constrolls which files are used for 
+The <code>environment</code> property controlls which files are used for 
 the build. Valid values are <code>dev</code> and <code>release</code>.
 
 * Dev build/install
